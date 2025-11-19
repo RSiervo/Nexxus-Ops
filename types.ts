@@ -39,3 +39,23 @@ export interface AIAnalysisResult {
   recommendations: string[];
   rootCause: string;
 }
+
+export interface StoragePool {
+  id: string;
+  name: string;
+  type: 'NVMe' | 'SSD' | 'HDD';
+  capacity: number; // in TB
+  used: number; // in TB
+  iops: number;
+  status: 'HEALTHY' | 'DEGRADED' | 'REBUILDING';
+  raidLevel: 'RAID 0' | 'RAID 5' | 'RAID 10';
+}
+
+export interface NetworkNode {
+  id: string;
+  type: 'LB' | 'APP' | 'DB' | 'INTERNET';
+  label: string;
+  status: 'active' | 'inactive' | 'error';
+  x: number;
+  y: number;
+}

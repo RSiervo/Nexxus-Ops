@@ -3,6 +3,9 @@ import Sidebar from './components/Sidebar';
 import Dashboard from './components/Dashboard';
 import ServerList from './components/ServerList';
 import LogAnalyzer from './components/LogAnalyzer';
+import NetworkTopology from './components/NetworkTopology';
+import StoragePools from './components/StoragePools';
+import Settings from './components/Settings';
 import { Server, ServerStatus } from './types';
 import { Bell, Search, User } from 'lucide-react';
 
@@ -66,23 +69,26 @@ const App: React.FC = () => {
     { name: 'Network', usage: 45 },
   ];
 
+  const handleAddServer = (newServer: Server) => {
+    setServers(prev => [newServer, ...prev]);
+  };
+
   const renderContent = () => {
     switch (activeTab) {
       case 'dashboard':
         return <Dashboard trafficData={trafficData} resourceData={resourceData} statusCounts={statusCounts} />;
       case 'servers':
-        return <ServerList servers={servers} />;
+        return <ServerList servers={servers} onAddServer={handleAddServer} />;
       case 'logs':
         return <LogAnalyzer />;
+      case 'network':
+        return <NetworkTopology />;
+      case 'storage':
+        return <StoragePools />;
+      case 'settings':
+        return <Settings />;
       default:
-        return (
-          <div className="flex items-center justify-center h-full text-slate-500">
-            <div className="text-center">
-              <h3 className="text-xl font-semibold text-slate-400 mb-2">Coming Soon</h3>
-              <p>This module is currently under development.</p>
-            </div>
-          </div>
-        );
+        return <Dashboard trafficData={trafficData} resourceData={resourceData} statusCounts={statusCounts} />;
     }
   };
 

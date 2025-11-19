@@ -39,23 +39,23 @@ const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab }) => {
             }`}
           >
             <item.icon className="w-5 h-5" />
-            <span className="font-medium">{item.label}</span>
+            <span className="font-medium text-sm">{item.label}</span>
           </button>
         ))}
       </nav>
 
       <div className="p-4 border-t border-slate-800">
-        <button className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-slate-200 transition-all">
+        <button
+          onClick={() => setActiveTab('settings')}
+          className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 ${
+            activeTab === 'settings'
+              ? 'bg-cyan-500/10 text-cyan-400 border border-cyan-500/20'
+              : 'text-slate-400 hover:bg-slate-800 hover:text-slate-200'
+          }`}
+        >
           <Settings className="w-5 h-5" />
-          <span className="font-medium">Settings</span>
+          <span className="font-medium text-sm">Settings</span>
         </button>
-        <div className="mt-4 px-4 py-3 bg-slate-800 rounded-lg border border-slate-700">
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-xs text-slate-400">System Status</span>
-            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-          </div>
-          <div className="text-xs text-slate-300 font-mono">v2.4.0-stable</div>
-        </div>
       </div>
     </div>
   );

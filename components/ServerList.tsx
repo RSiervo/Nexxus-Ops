@@ -1,14 +1,17 @@
 import React, { useState } from 'react';
 import { Server, ServerStatus } from '../types';
-import { Search, Filter, MoreHorizontal, Terminal, Power, AlertCircle } from 'lucide-react';
+import { Search, Filter, MoreHorizontal, Terminal, Power, AlertCircle, Plus } from 'lucide-react';
+import ConnectServerModal from './ConnectServerModal';
 
 interface ServerListProps {
   servers: Server[];
+  onAddServer: (server: Server) => void;
 }
 
-const ServerList: React.FC<ServerListProps> = ({ servers }) => {
+const ServerList: React.FC<ServerListProps> = ({ servers, onAddServer }) => {
   const [filter, setFilter] = useState('ALL');
   const [search, setSearch] = useState('');
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const filteredServers = servers.filter(s => {
     const matchesFilter = filter === 'ALL' || s.status === filter;
@@ -54,6 +57,13 @@ const ServerList: React.FC<ServerListProps> = ({ servers }) => {
               {status === 'ALL' ? 'All Systems' : status}
             </button>
           ))}
+          <button
+            onClick={() => setIsModalOpen(true)}
+            className="flex items-center gap-2 px-4 py-2 bg-cyan-600 hover:bg-cyan-500 text-white rounded-lg font-medium transition-colors ml-2 shadow-lg shadow-cyan-900/20"
+          >
+            <Plus className="w-4 h-4" />
+            <span>Connect Server</span>
+          </button>
         </div>
       </div>
 
@@ -66,6 +76,7 @@ const ServerList: React.FC<ServerListProps> = ({ servers }) => {
                 <th className="px-6 py-4 font-medium">IP Address</th>
                 <th className="px-6 py-4 font-medium">Role</th>
                 <th className="px-6 py-4 font-medium">Status</th>
+                <th className="px-6 py-4 font-medium">Uptime</th>
                 <th className="px-6 py-4 font-medium">CPU</th>
                 <th className="px-6 py-4 font-medium">Memory</th>
                 <th className="px-6 py-4 font-medium text-right">Actions</th>
@@ -92,6 +103,7 @@ const ServerList: React.FC<ServerListProps> = ({ servers }) => {
                       {server.status}
                     </span>
                   </td>
+                  <td className="px-6 py-4 text-sm text-slate-300 font-mono">{server.uptime}</td>
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-3">
                       <div className="flex-1 h-1.5 w-24 bg-slate-700 rounded-full overflow-hidden">
@@ -138,6 +150,15 @@ const ServerList: React.FC<ServerListProps> = ({ servers }) => {
           </div>
         )}
       </div>
+
+      <ConnectServerModal 
+        isOpen={isModalOpen} 
+        onClose={() => setIsModalOpen(false)} 
+        onConnect={(server) => {
+          onAddServer(server);
+          setIsModalOpen(false);
+        }}
+      />
     </div>
   );
 };
